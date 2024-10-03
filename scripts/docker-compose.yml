@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=production
+      - POSTGRES_PASSWORD=production
+      - POSTGRES_DB=production
+
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - '7070:7070'
+    environment:
+      - POSTGRES_USER=honeypot
+      - POSTGRES_PASSWORD=honeypot
+      - POSTGRES_DB=honeypot
