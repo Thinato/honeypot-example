@@ -1,20 +1,41 @@
-version: '3'
-
 services:
-  postgres:
+  db-production:
     image: postgres:16-alpine
     ports:
-      - '5432:5432'
+      - "5432:5432"
     environment:
-      - POSTGRES_USER=production
-      - POSTGRES_PASSWORD=production
-      - POSTGRES_DB=production
+      - POSTGRES_USER=${POSTGRES_USER_PROD}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD_PROD}
+      - POSTGRES_DB=${POSTGRES_DB_PROD}
 
-  postgres:
+  db-honeypot:
     image: postgres:16-alpine
     ports:
-      - '7070:7070'
+      - "7070:5432"
     environment:
-      - POSTGRES_USER=honeypot
-      - POSTGRES_PASSWORD=honeypot
-      - POSTGRES_DB=honeypot
+      - POSTGRES_USER=${POSTGRES_USER_HONEYPOT}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD_HONEYPOT}
+      - POSTGRES_DB=${POSTGRES_DB_HONEYPOT}
+
+  server:
+    image: node:18-alpine
+    platform: linux/amd64
+    working_dir: /server
+    environment:
+      - NODE_ENV=${NODE_ENV}
+    volumes:
+      - ../:/server
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db-production
+      - db-honeypot
+    entrypoint: >
+      /bin/sh -c "
+      ls -la;
+      cd server;
+      ls -la;
+      yarn install && \
+      yarn build; \
+      node dist/main
+      "
