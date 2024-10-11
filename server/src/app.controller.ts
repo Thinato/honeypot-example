@@ -5,14 +5,14 @@ import { AppService } from './app.service';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get('/:document')
-  getPersonInfo(
-    @Ip() ip: string,
-    @Request() req: any,
-    @Param('document') document: string,
-  ): string {
-    console.log('IP:', ip);
-    console.log('Document:', document);
-    return document;
-  }
+  // @Get('/:document')
+  // getPersonInfo(
+  //   @Ip() ip: string,
+  //   @Request() req: any,
+  //   @Param('document') document: string,
+  // ): string {
+  //   console.log('IP:', ip);
+  //   console.log('Document:', document);
+  //   return document;
+  // }
 }
