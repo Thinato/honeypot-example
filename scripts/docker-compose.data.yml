@@ -1,0 +1,24 @@
+services:
+  db-production:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER_PROD}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD_PROD}
+      - POSTGRES_DB=${POSTGRES_DB_PROD}
+
+  db-honeypot:
+    image: postgres:16-alpine
+    ports:
+      - "7070:5432"
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER_HONEYPOT}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD_HONEYPOT}
+      - POSTGRES_DB=${POSTGRES_DB_HONEYPOT}
+  redis:
+    image: redis:latest
+    container_name: ip_cache
+    ports:
+      - "7979:7979"
+    restart: always
