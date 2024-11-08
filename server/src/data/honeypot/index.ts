@@ -1,14 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { Client } from 'pg';
-import { IHoneypotDB } from './interface';
 
 @Injectable()
-export class HoneypotDB implements IHoneypotDB {
+export class HoneypotDB {
   client: Client;
 
   constructor() {
     this.client = new Client({
-      connectionString: process.env.POSTGRES_URI,
+      connectionString: process.env.DB_HONEYPOT_URI,
     });
 
     this.client.connect();

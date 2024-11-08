@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { PersonEntity } from './entity';
-import { IPostgresDB } from '../data/postgres/interface';
-import { IHoneypotDB } from '../data/honeypot/interface';
 import { DataStatements } from '../data/statements';
+import { PostgresDB } from '../data/postgres';
+import { HoneypotDB } from '../data/honeypot';
 
 @Injectable()
 export class PersonRepository {
   constructor(
-    private readonly db: IPostgresDB,
-    private readonly honeypot: IHoneypotDB,
+    private readonly db: PostgresDB,
+    private readonly honeypot: HoneypotDB,
   ) {}
 
   async getPersonByDocument(
@@ -16,6 +16,7 @@ export class PersonRepository {
     useHoneypot: boolean,
   ): Promise<PersonEntity> {
     let personData: any;
+
     if (useHoneypot) {
       personData = await this.honeypot.query(
         DataStatements.GET_PERSON_BY_DOCUMENT,
@@ -27,9 +28,8 @@ export class PersonRepository {
       ]);
     }
 
-    console.log('personData', personData);
-
-    return this.buildPersonEntity(personData);
+    if (personData.length > 0) return this.buildPersonEntity(personData[0]);
+    else return null
   }
 
   buildPersonEntity(data: any): PersonEntity {

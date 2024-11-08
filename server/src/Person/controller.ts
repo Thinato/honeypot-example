@@ -1,19 +1,19 @@
 import { Controller, Get, Ip, Param, Request } from '@nestjs/common';
 import { PersonService } from './service';
-import { PersonEntity } from './entity';
+import { PersonResult } from './result';
 
 @Controller()
 export class PersonController {
   constructor(private readonly service: PersonService) {}
 
-  @Get('/:document')
-  getPersonInfo(
+  @Get('/person/:document')
+  async getPersonInfo(
     @Ip() ip: string,
     @Request() req: any,
     @Param('document') document: string,
-  ): Promise<PersonEntity> {
+  ): Promise<PersonResult> {
     console.log('IP:', ip);
     console.log('Document:', document);
-    return this.service.findPerson(document);
+    return await this.service.findPerson(ip, document);
   }
 }

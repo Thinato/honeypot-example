@@ -1,14 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { Client } from 'pg';
-import { IPostgresDB } from './interface';
 
 @Injectable()
-export class PostgresDB implements IPostgresDB {
+export class PostgresDB  {
   client: Client;
 
   constructor() {
     this.client = new Client({
-      connectionString: process.env.POSTGRES_URI,
+      connectionString: process.env.DB_PRODUCTION_URI,
     });
 
     this.client.connect();

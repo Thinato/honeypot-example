@@ -1,11 +1,12 @@
-import Redis from 'redis';
-import { IRedisDB } from './interface';
+import Redis from 'ioredis';
+import { Injectable } from '@nestjs/common';
 
-export class RedisDB implements IRedisDB {
-  client: Redis.RedisClientType;
+@Injectable()
+export class RedisDB {
+  client: Redis;
 
   constructor() {
-    this.client = Redis.createClient();
+    this.client = new Redis();
   }
 
   async get(key: string): Promise<string | null> {

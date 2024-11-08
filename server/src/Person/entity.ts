@@ -2,7 +2,7 @@ export class PersonEntity {
   name: string;
   document: string;
   birth_date: Date;
-  gender: string;
+  gender: 'MALE' | 'FEMALE';
 
   relations: any[];
 
