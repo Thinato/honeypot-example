@@ -1,21 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Honeypot Example</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f9;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .result {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      white-space: pre-wrap;
+    }
+  </style>
 </head>
+
 <body>
-  <h1>Procurar Relacionamentos</h1>
-  
-  <form id="personSearch">
-    <input type="text" id="personDocument" placeholder="numero do documento..." required>
-    <button type="submit">Buscar</button>
-  </form>
+  <div class="container">
+    <h1>Buscar Pessoa</h1>
+    <label for="cpfInput">Digite um CPF</label>
+    <input type="text" id="cpfInput" placeholder="Digite um CPF (ex. 12345678900)">
+    <button id="lookupButton">Buscar</button>
+    <div class="result" id="resultArea"></div>
+  </div>
 
-  <ul id="relationList"></ul>
+  <script>
+    document.getElementById('lookupButton').addEventListener('click', async () => {
+      const cpf = document.getElementById('cpfInput').value.trim();
+      const resultArea = document.getElementById('resultArea');
+      resultArea.textContent = 'Loading...';
 
-  <script src="app.js"></script>
+      if (!cpf) {
+        resultArea.textContent = 'Documento invalido.';
+        return;
+      }
+
+      try {
+        const response = await fetch(`http://localhost:8080/person/${cpf}`);
+        const data = await response.json();
+
+        if (response.ok) {
+          resultArea.textContent = JSON.stringify(data, null, 2);
+        } else {
+          resultArea.textContent = `Erro: ${data.message || 'Erro desconhecido'}`;
+        }
+      } catch (error) {
+        resultArea.textContent = `Requisicao falhou: ${error.message}`;
+      }
+    });
+  </script>
 </body>
+
 </html>
