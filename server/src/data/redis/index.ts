@@ -13,7 +13,7 @@ export class RedisDB {
     return this.client.get(key);
   }
 
-  async set(key: string, value: string): Promise<string> {
-    return this.client.set(key, value);
+  async set(key: string, value: string, ttl: number = 60): Promise<string> {
+    return this.client.set(key, value, 'EX', ttl);
   }
 }

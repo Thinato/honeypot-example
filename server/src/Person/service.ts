@@ -16,11 +16,14 @@ export class PersonService {
     let result: PersonEntity;
 
     if (requestAmount) {
-      if (parseInt(requestAmount) >= 10) {
+      const ra = parseInt(requestAmount);
+
+      if (ra >= 10) {
+        await this.cache.set(ip, (ra + 1).toString(), ra * 6);
         result = await this.repository.getPersonByDocument(doc, true);
         return PersonResult.ok(result);
       } else {
-        await this.cache.set(ip, (parseInt(requestAmount) + 1).toString());
+        await this.cache.set(ip, (ra + 1).toString());
       }
     } else {
       await this.cache.set(ip, '1');
