@@ -16,7 +16,7 @@ export class PersonService {
     let result: PersonEntity;
 
     if (requestAmount) {
-      if (parseInt(requestAmount) > 10) {
+      if (parseInt(requestAmount) >= 10) {
         result = await this.repository.getPersonByDocument(doc, true);
         return PersonResult.ok(result);
       } else {
